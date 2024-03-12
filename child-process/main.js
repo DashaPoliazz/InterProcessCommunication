@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const os = require('node:os');
-const cp = require('node:child_process');
+const os = require("node:os");
+const cp = require("node:child_process");
 
-console.log('Started primary:', process.pid);
+console.log("Started primary:", process.pid);
 
 const cpuCount = os.cpus().length;
 const workers = [];
 
 for (let i = 0; i < cpuCount; i++) {
-  const worker = cp.fork('./worker.js');
-  console.log('Started worker:', worker.pid);
+  const worker = cp.fork("./worker.js");
+  console.log("Started worker:", worker.pid);
   workers.push(worker);
 }
 
@@ -20,13 +20,12 @@ const results = [];
 workers.forEach((worker) => {
   worker.send({ task });
 
-  worker.on('exit', (code) => {
-    console.log('Worker exited:', worker.pid, code);
+  worker.on("exit", (code) => {
+    console.log("Worker exited:", worker.pid, code);
   });
 
-  worker.on('message', (message) => {
-
-    console.log('Message from worker', worker.pid);
+  worker.on("message", (message) => {
+    console.log("Message from worker", worker.pid);
     console.log(message);
 
     results.push(message.result);
@@ -34,7 +33,6 @@ workers.forEach((worker) => {
     if (results.length === cpuCount) {
       process.exit(0);
     }
-
   });
 
   setTimeout(() => process.exit(1), 5000);

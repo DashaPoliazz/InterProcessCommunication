@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
-const net = require('node:net');
+const net = require("node:net");
 
-const user = { name: 'Marcus Aurelius', age: 1895 };
+const user = { name: "Marcus Aurelius", age: 1895 };
 
 const server = net.createServer((socket) => {
-  console.log('Connected:', socket.localAddress);
+  console.log("Connected:", socket.localAddress);
   socket.write(JSON.stringify(user));
-  socket.on('data', (data) => {
+  socket.on("data", (data) => {
     const message = data.toString();
-    console.log('Data received (by server):', data);
-    console.log('toString:', message);
+    console.log("Data received (by server):", data);
+    console.log("toString:", message);
   });
 });
 
