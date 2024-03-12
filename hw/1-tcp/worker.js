@@ -2,7 +2,10 @@
 
 console.log(`Worker ${process.pid} has been started`);
 
-const calculation = (item) => item * 2;
+const calculation = (item) => ({
+  ...item,
+  v: item.v * 2,
+});
 
 process.on("message", (message) => {
   console.log("Message to worker:", message);
@@ -12,6 +15,6 @@ process.on("message", (message) => {
     process.exit(1);
   }
 
-  const result = message.task.map(calculation);
+  const result = task.map(calculation);
   process.send({ result });
 });

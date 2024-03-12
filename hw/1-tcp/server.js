@@ -5,7 +5,6 @@ const os = require("node:os");
 const TASK_SIZE = 3;
 
 const cores = os.cpus().length;
-const results = [];
 
 const PORT = 3000;
 
@@ -13,7 +12,13 @@ const server = net.createServer((socket) => {
   console.log("Connected: ", socket.remoteAddress);
 
   const onSocketData = (data) => {
-    const task = JSON.parse(data);
+    console.log(data);
+    const task = JSON.parse(data).map((v, idx) => ({
+      v,
+      idx,
+    }));
+    const results = new Array(task.length).fill(false);
+
     console.log("Server: I'm received task:", task);
 
     // Forking processes
@@ -35,17 +40,16 @@ const server = net.createServer((socket) => {
       tasks.push(smallerTask);
     }
 
-    console.log("TASKS:", tasks);
-
     const onWorkerMessage = (worker, message) => {
       console.log("Message from worker:", worker.pid);
       console.log("Message:", message);
 
-      console.log("Tasks Length: ", tasks.length);
+      const { result } = message;
+      result.forEach(({ v, idx }) => {
+        if (!results[idx]) results[idx] = v;
+      });
 
-      results.push(message.result);
-
-      if (task.length === 0) {
+      if (tasks.length <= 0) {
         socket.write(JSON.stringify(results));
         server.close();
       }
