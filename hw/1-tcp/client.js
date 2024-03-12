@@ -11,5 +11,8 @@ socket.connect(
   },
   () => {
     socket.write(JSON.stringify(task));
+    socket.on("data", (data) => {
+      console.log("Result from server:", data.toString());
+    });
   }
 );
