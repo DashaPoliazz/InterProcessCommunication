@@ -1,0 +1,12 @@
+{
+  "name": "interprocesscommunication",
+  "version": "1.0.0",
+  "description": "[Задать вопрос](https://github.com/HowProgrammingWorks/LiveQA/discussions/categories/q-a)",
+  "main": "main.js",
+  "scripts": {
+    "serve": "node --watch ./hw/2-multiclient/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
